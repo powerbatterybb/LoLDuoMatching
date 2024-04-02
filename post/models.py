@@ -21,3 +21,9 @@ class Choice(models.Model):
 
     def __str__(self):
       return self.choice_text
+    
+class Post(models.Model):
+    objects: None = None
+    title = models.CharField(max_length=200)
+    contents = models.TextField()
+    create_date = models.DateTimeField(auto_now_add=True)
