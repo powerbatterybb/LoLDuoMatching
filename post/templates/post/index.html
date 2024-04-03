@@ -91,9 +91,10 @@
                         <a href="{% url 'post:post_register' %}" class="nav-link active">글작성</a>
                     </li>
                 </ul>
-                <form class="d-flex" role="search">
+                <form class="d-flex" role="search" action="{% url 'post:signup' %}" method="post">
+                    {% csrf_token %}
                     <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search">
-                    <button class="btn btn-outline-success" type="submit">Sign</button>
+                    <button class="btn btn-outline-success" type="submit">Sign Up</button>
                 </form>
             </div>
         </div>
