@@ -92,7 +92,7 @@ def post_edit(request, pk):
         form = PostForm(request.POST, instance=post)
         if form.is_valid():
             form.save()
-            return redirect('detail', pk=pk)
+            return redirect('post:index')
     else:
         form = PostForm(instance=post)
     return render(request, 'post/post_edit.html', {'form': form})

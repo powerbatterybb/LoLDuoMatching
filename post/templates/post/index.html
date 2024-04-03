@@ -64,7 +64,9 @@
                         <div class="btn-group">
                             <button type="button" class="btn btn-sm btn-outline-secondary"><a
                                     href="{% url 'post:post_detail' pk=post.pk %}">View</a></button>
-                            <button type="button" class="btn btn-sm btn-outline-secondary">Edit</button>
+                            <button type="button" class="btn btn-sm btn-outline-secondary"><a 
+                                    href="{% url 'post:post_edit' pk=post.pk %}">Edit</a>
+                            </button>
                             <button type="button" class="btn btn-sm btn-outline-secondary"><a 
                                     href="{% url 'post:post_delete' pk=post.pk %}">Delete</a></button>
                         </div>
