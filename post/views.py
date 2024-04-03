@@ -46,7 +46,7 @@ def vote(request, question_id):
         return HttpResponseRedirect(reverse("post:results", args=(question.id,)))
 """
 
-#최신튜토_4
+# 최신튜토_4
 from django.http import HttpResponseRedirect
 from django.shortcuts import get_object_or_404, render
 from django.urls import reverse
@@ -70,18 +70,20 @@ class IndexView(generic.ListView):
         return Question.objects.filter(pub_date__lte=timezone.now()).order_by("-pub_date")[:5]
 
 
-#게시글 렌더링 추가
+# 게시글 렌더링 추가
 def index(request):
     posts = Post.objects.all()
     context = {'posts': posts}
 
     return render(request, 'post/index.html', context)
-    
-#게시글 상세 페이지 추가
-def post_detail(request,pk):
+
+# 게시글 상세 페이지 추가
+
+
+def post_detail(request, pk):
     post = get_object_or_404(Post, pk=pk)
     # comments = post.comments.filter(approved_comment=True)
-    return render(request, 'post/detail.html', {'post': post})
+    return render(request, 'post/post_detail.html', {'post': post})
     # return render(request, 'post/post_detail.html', {'post': post, 'comments': comments})
 
 
@@ -111,18 +113,20 @@ def vote(request, question_id):
         # with POST data. This prevents data from being posted twice if a
         # user hits the Back button.
         return HttpResponseRedirect(reverse("post:results", args=(question.id,)))
-    
+
+
 def post_register(request):
     if request.method == 'GET':
         postForm = PostForm()
-        return render(request, 'post/register.html', {'postForm':postForm})
-    elif request.method =='POST':
+        return render(request, 'post/register.html', {'postForm': postForm})
+    elif request.method == 'POST':
         postForm = PostForm(request.POST)
 
         if postForm.is_valid():
             post = postForm.save(commit=False)
             post.save()
             return redirect('post:index')
+
 
 def post_edit(request, pk):
     post = get_object_or_404(Post, pk=pk)
@@ -135,6 +139,5 @@ def post_edit(request, pk):
         form = PostForm(instance=post)
     return render(request, 'post/post_edit.html', {'form': form})
 
-def post_detail(request, pk):
-    post = get_object_or_404(Post, pk=pk)
-    return render(request, 'detail.html', {'post': post})
+
+
