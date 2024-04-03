@@ -16,12 +16,6 @@ def index(request):
     return render(request, 'post/index.html', {'posts': posts, 'search_results': search_results})
     # return render(request, 'post/index.html', context)
 
-
-
-
-
-
-
 def post_detail(request, pk):
     post = get_object_or_404(Post, pk=pk)
     comments = Comment.objects.filter(post=post)
