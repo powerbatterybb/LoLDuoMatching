@@ -1,9 +1,8 @@
 from django.shortcuts import get_object_or_404, render
 from post.forms import PostForm, CommentForm
 from django.shortcuts import redirect
-
+from .forms import SignUpForm
 from .models import Post, Comment
-
 
 def index(request):
     posts = Post.objects.all()
@@ -61,3 +60,13 @@ def comment_delete(request, pk, comment_id):
     if request.method == 'POST':
         comment.delete()
     return redirect('post:post_detail', pk=pk)
+
+def signup(request):
+    if request.method == 'POST':
+        form = SignUpForm(request.POST)
+        if form.is_valid():
+            form.save()
+            return redirect('post:index')  # 회원가입 후 로그인 페이지로 리다이렉트
+    else:
+        form = SignUpForm()
+    return render(request, 'post/signup.html', {'form': form})
