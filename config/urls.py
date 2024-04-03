@@ -21,5 +21,4 @@ import post.views
 urlpatterns = [
     path("post/", include("post.urls")),
     path('admin/', admin.site.urls),
-    path('post/register', post.views.register)
 ]

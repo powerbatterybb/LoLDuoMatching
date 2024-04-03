@@ -77,16 +77,12 @@ def index(request):
 
     return render(request, 'post/index.html', context)
     
-
-
-class DetailView(generic.DetailView):
-    model = Question
-    template_name = "post/detail.html"
-    def get_queryset(self):
-        """
-        Excludes any questions that aren't published yet.
-        """
-        return Question.objects.filter(pub_date__lte=timezone.now())
+#게시글 상세 페이지 추가
+def post_detail(request,pk):
+    post = get_object_or_404(Post, pk=pk)
+    # comments = post.comments.filter(approved_comment=True)
+    return render(request, 'post/detail.html', {'post': post})
+    # return render(request, 'post/post_detail.html', {'post': post, 'comments': comments})
 
 
 class ResultsView(generic.DetailView):
