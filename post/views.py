@@ -126,4 +126,4 @@ def register(request):
         if postForm.is_valid():
             post = postForm.save(commit=False)
             post.save()
-            return redirect('/post/register')
+            return redirect('post:index')
