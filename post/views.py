@@ -6,9 +6,15 @@ from .models import Post, Comment
 
 def index(request):
     posts = Post.objects.all()
-    context = {'posts': posts}
+    query = request.GET.get('q')
+    # context = {'posts': posts}
 
-    return render(request, 'post/index.html', context)
+    if query:
+        search_results = Post.objects.filter(title__icontains=query)
+    else:
+        search_results = None
+    return render(request, 'post/index.html', {'posts': posts, 'search_results': search_results})
+    # return render(request, 'post/index.html', context)
 
 
 def post_detail(request, pk):
@@ -70,3 +76,11 @@ def signup(request):
     else:
         form = SignUpForm()
     return render(request, 'post/signup.html', {'form': form})
+
+def search_results(request):
+    query = request.GET.get('q')
+    if query:
+        results = Post.objects.filter(title__icontains=query)
+    else:
+        results = None
+    return render(request, 'post/index.html', {'query': query, 'results': results})
