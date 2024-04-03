@@ -116,7 +116,7 @@ def vote(request, question_id):
         # user hits the Back button.
         return HttpResponseRedirect(reverse("post:results", args=(question.id,)))
     
-def register(request):
+def post_register(request):
     if request.method == 'GET':
         postForm = PostForm()
         return render(request, 'post/register.html', {'postForm':postForm})
@@ -127,3 +127,18 @@ def register(request):
             post = postForm.save(commit=False)
             post.save()
             return redirect('post:index')
+
+def post_edit(request, pk):
+    post = get_object_or_404(Post, pk=pk)
+    if request.method == 'POST':
+        form = PostForm(request.POST, instance=post)
+        if form.is_valid():
+            form.save()
+            return redirect('detail', pk=pk)
+    else:
+        form = PostForm(instance=post)
+    return render(request, 'post/post_edit.html', {'form': form})
+
+def post_detail(request, pk):
+    post = get_object_or_404(Post, pk=pk)
+    return render(request, 'detail.html', {'post': post})
