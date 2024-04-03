@@ -74,16 +74,14 @@ def post_detail(request, pk):
     # return render(request, 'post/post_detail.html', {'post': post, 'comments': comments})
 
 def post_register(request):
-    if request.method == 'GET':
-        postForm = PostForm()
-        return render(request, 'post/register.html', {'postForm': postForm})
-    elif request.method == 'POST':
-        postForm = PostForm(request.POST)
-
-        if postForm.is_valid():
-            post = postForm.save(commit=False)
-            post.save()
+    if request.method == 'POST':
+        form = PostForm(request.POST)
+        if form.is_valid():
+            form.save()
             return redirect('post:index')
+    else:
+        form = PostForm()
+    return render(request, 'post/post_register.html', {'form': form})
 
 
 def post_edit(request, pk):
