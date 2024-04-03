@@ -65,7 +65,8 @@
                             <button type="button" class="btn btn-sm btn-outline-secondary"><a
                                     href="{% url 'post:post_detail' pk=post.pk %}">View</a></button>
                             <button type="button" class="btn btn-sm btn-outline-secondary">Edit</button>
-                            <button type="button" class="btn btn-sm btn-outline-secondary">Delete</button>
+                            <button type="button" class="btn btn-sm btn-outline-secondary"><a 
+                                    href="{% url 'post:post_delete' pk=post.pk %}">Delete</a></button>
                         </div>
                         <small class="text-body-secondary">{{post.create_date}}</small>
                     </div>
