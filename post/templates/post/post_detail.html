@@ -8,10 +8,27 @@
 <body>
     <h1>{{ post.title }}</h1>
     <p>{{ post.contents }}</p>
-    <p>Published by: {% if post.author %}{{ post.author }}{% else %}Anonymous{% endif %}</p> 
+    <p>Published by: {% if post.author %}{{ post.author }}{% else %}Anonymous{% endif %}</p>
 
+    <h3>댓글 작성</h3>
+    <form method="post">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button type="submit">댓글 작성</button>
+    </form>
 
+    {% for comment in comments %}
+    <div>
+        <p>{{ comment.author }}: {{ comment.content }}</p>
+        <!-- 댓글 삭제 링크 또는 버튼 -->
+        <form action="{% url 'post:comment_delete' pk=post.pk comment_id=comment.pk %}" method="post">
+            {% csrf_token %}
+            <button type="submit">댓글 삭제</button>
+        </form>
+    </div>
+    {% endfor %}
+
+    <a href="{% url 'post:index' %}">게시판으로 돌아가기</a>
 </body>
 
 </html>
-
