@@ -7,6 +7,10 @@ class  PostForm(forms.ModelForm):
   class Meta:
     model = Post
     fields = ('title','contents')
+    labels ={
+        'title' : '제목',
+        'contents' : '내용'
+    }
 
 
 class CommentForm(forms.ModelForm):
