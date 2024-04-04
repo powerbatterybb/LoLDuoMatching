@@ -111,6 +111,27 @@
             display: flex;
             justify-content: center;
         }
+
+        .row {
+            --bs-gutter-x: 15px;
+            --bs-gutter-y: 15px;
+            display: flex;
+            flex-wrap: wrap;
+            margin-top: calc(-1* var(--bs-gutter-y));
+            margin-right: 2%;
+            margin-left: 2%;
+            flex-direction: row;
+        }
+
+        .carousel-control-next {
+            position: fixed;
+            top : 400px;
+            left : 150px;
+        }
+
+        .col {
+            text-decoration-line: none;
+        }
     </style>
 </head>
 
@@ -126,15 +147,11 @@
             <div class="collapse navbar-collapse" id="navbarSupportedContent">
                 <ul class="navbar-nav me-auto mb-2 mb-lg-0">
                     <li class="nav-item">
-                        <a class="nav-link active" aria-current="page" href="#">Home</a>
-                    </li>
-                    <li class="nav-item">
                         <a href="{% url 'post:post_register' %}" class="nav-link active">글작성</a>
                     </li>
                 </ul>
                 <form class="d-flex" role="search" action="{% url 'post:signup' %}" method="post">
                     {% csrf_token %}
-                    <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search">
                     <button class="btn btn-outline-success" type="submit">Sign Up</button>
                 </form>
             </div>
@@ -146,7 +163,7 @@
         <div class="row justify-content-center">
             <div class="col-lg-8 px-0">
                 <form action="{% url 'post:search_results' %}" method="get">
-                    <input type="text" name="q" class="form-control">
+                    <input type="text" name="q" class="form-control" placeholder="Search" aria-label="Search">
                     <button type="submit">검색</button>
                 </form>
             </div>
@@ -160,42 +177,6 @@
     <div class="container">
 
         <!-- post_list.html -->
-
-        <div id="carouselExampleRide" class="carousel slide" data-bs-ride="carousel">
-            <div class="carousel-inner">
-                {% for post in posts %}
-                <div class="carousel-item {% if forloop.first %}active{% endif %}">
-                    <div class="card shadow-sm">
-                        <div class="card-body">
-                            <p class="card-text">{{ post.title }}</p>
-                            <p class="card-text">{{ post.contents }}</p>
-                            <div class="d-flex justify-content-center align-items-center">
-                                <div class="btn-group">
-                                    <button type="button" class="btn btn-sm btn-outline-secondary"><a
-                                            href="{% url 'post:post_detail' pk=post.pk %}">View</a></button>
-                                    <button type="button" class="btn btn-sm btn-outline-secondary"><a
-                                            href="{% url 'post:post_edit' pk=post.pk %}">Edit</a></button>
-                                    <button type="button" class="btn btn-sm btn-outline-danger"><a
-                                            href="{% url 'post:post_delete' pk=post.pk %}">Delete</a></button>
-                                </div>
-                                <small class="text-body-secondary">{{ post.create_date }}</small>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                {% endfor %}
-            </div>
-            <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleRide"
-                data-bs-slide="prev">
-                <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-                <span class="visually-hidden">Previous</span>
-            </button>
-            <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleRide"
-                data-bs-slide="next">
-                <span class="carousel-control-next-icon" aria-hidden="true"></span>
-                <span class="visually-hidden">Next</span>
-            </button>
-        </div>
         <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 g-3">
             {% if results %}
             {% for post in results %}
@@ -247,6 +228,8 @@
         </div>
 
         <br>
+        <br>
+
 
         <div class="rank_table">
             {% if rank %}

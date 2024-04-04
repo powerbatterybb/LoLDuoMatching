@@ -14,7 +14,7 @@ class Post(models.Model):
 class Comment(models.Model):
     post = models.ForeignKey('Post', on_delete=models.CASCADE)
     author = models.CharField(max_length=200, null=True)
-    content = models.TextField()
+    content = models.CharField(max_length=200, null=True)
     created_date = models.DateTimeField(default=timezone.now)
 
     def __str__(self):
