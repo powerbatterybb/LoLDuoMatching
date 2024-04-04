@@ -3,18 +3,21 @@ from post.forms import PostForm, CommentForm
 from django.shortcuts import redirect
 from .forms import SignUpForm
 from .models import Post, Comment
+from .api import rank_list
+
 
 def index(request):
     posts = Post.objects.all()
     query = request.GET.get('q')
-    # context = {'posts': posts}
+    rank = rank_list()
+    top_ten = rank[0:5]
 
     if query:
         search_results = Post.objects.filter(title__icontains=query)
     else:
         search_results = None
-    return render(request, 'post/index.html', {'posts': posts, 'search_results': search_results})
-    # return render(request, 'post/index.html', context)
+    return render(request, 'post/index.html', {'posts': posts, 'search_results': search_results, 'rank': top_ten})
+
 
 def post_detail(request, pk):
     post = get_object_or_404(Post, pk=pk)
@@ -66,6 +69,7 @@ def comment_delete(request, pk, comment_id):
         comment.delete()
     return redirect('post:post_detail', pk=pk)
 
+
 def signup(request):
     if request.method == 'POST':
         form = SignUpForm(request.POST)
@@ -76,6 +80,7 @@ def signup(request):
         form = SignUpForm()
     return render(request, 'post/signup.html', {'form': form})
 
+
 def search_results(request):
     query = request.GET.get('q')
     if query:
@@ -83,3 +88,7 @@ def search_results(request):
     else:
         results = None
     return render(request, 'post/index.html', {'query': query, 'results': results})
+
+def post_list(request):
+    posts = Post.objects.all()
+    return render(request, 'post_list.html', {'posts': posts})
