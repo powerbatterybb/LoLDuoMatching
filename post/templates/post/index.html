@@ -84,8 +84,32 @@
 
         .carousel-control-prev,
         .carousel-control-next {
-            margin-right:-190px;
-            margin-left:-190px;
+            margin-right: -190px;
+            margin-left: -190px;
+        }
+
+        table {
+            text-align: center;
+            counter-reset: rowNumber;
+            border-collapse: collapse;
+            width: 70%;
+        }
+
+        th,
+        td {
+            border: 1px solid #dddddd;
+            text-align: left;
+            padding: 8px;
+        }
+
+        td:first-child::before {
+            counter-increment: rowNumber;
+            content: counter(rowNumber);
+        }
+
+        .rank_table {
+            display: flex;
+            justify-content: center;
         }
     </style>
 </head>
@@ -172,7 +196,84 @@
                 <span class="visually-hidden">Next</span>
             </button>
         </div>
+        <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 g-3">
+            {% if results %}
+            {% for post in results %}
+            <!-- 검색 결과를 표시하는 부분 -->
+            <div class="col">
+                <div class="card shadow-sm">
+                    <div class="card-body">
+                        <p class="card-text"><text x="50%" y="50%" fill="#eceeef" dy=".3em">{{post.title}}</text></p>
+                        <p class="card-text">{{post.contents}}</p>
+                        <div class="d-flex justify-content-between align-items-center">
+                            <div class="btn-group">
+                                <button type="button" class="btn btn-sm btn-outline-secondary"><a
+                                        href="{% url 'post:post_detail' pk=post.pk %}">View</a></button>
+                                <button type="button" class="btn btn-sm btn-outline-secondary"><a
+                                        href="{% url 'post:post_edit' pk=post.pk %}">Edit</a></button>
+                                <button type="button" class="btn btn-sm btn-outline-danger"><a
+                                        href="{% url 'post:post_delete' pk=post.pk %}">Delete</a></button>
+                            </div>
+                            <small class="text-body-secondary">{{post.create_date}}</small>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+            {% else %}
+            {% for post in posts %}
+            <!-- 검색 결과가 없을 때 모든 게시물을 표시하는 부분 -->
+            <div class="col">
+                <div class="card shadow-sm">
+                    <div class="card-body">
+                        <p class="card-text"><text x="50%" y="50%" fill="#eceeef" dy=".3em">{{post.title}}</text></p>
+                        <p class="card-text">{{post.contents}}</p>
+                        <div class="d-flex justify-content-between align-items-center">
+                            <div class="btn-group">
+                                <button type="button" class="btn btn-sm btn-outline-secondary"><a
+                                        href="{% url 'post:post_detail' pk=post.pk %}">View</a></button>
+                                <button type="button" class="btn btn-sm btn-outline-secondary"><a
+                                        href="{% url 'post:post_edit' pk=post.pk %}">Edit</a></button>
+                                <button type="button" class="btn btn-sm btn-outline-danger"><a
+                                        href="{% url 'post:post_delete' pk=post.pk %}">Delete</a></button>
+                            </div>
+                            <small class="text-body-secondary">{{post.create_date}}</small>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+            {% endif %}
+        </div>
 
+        <br>
+
+        <div class="rank_table">
+            {% if rank %}
+            <table>
+                <thead>
+                    <tr>
+                        <th>rank</th>
+                        <th>name</th>
+                        <th>tier</th>
+                        <th>points</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for rank in rank %}
+                    <tr>
+                        <td></td>
+                        <td>{{rank.summonerName}}</td>
+                        <td>{{rank.tier}}</td>
+                        <td>{{rank.leaguePoints}}</td>
+                    </tr>
+                    {% endfor %}
+            </table>
+            </tbody>
+            {% else %}
+
+            {% endif %}
+        </div>
 
         <footer class="py-3 my-4 justify-center">
             <ul class="nav justify-content-center border-bottom pb-3 mb-3">
