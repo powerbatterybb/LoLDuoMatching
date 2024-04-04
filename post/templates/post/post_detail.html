@@ -1,34 +1,206 @@
-<!DOCTYPE html>
-<html>
+<!doctype html>
+<html lang="en">
 
 <head>
-    <title>{{ post.title }}</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>LoLDuoMatching</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
+    <link rel="stylesheet" href="styles.css">
+    <link rel="icon" type="image/png" href="\static\post\images\pngegg.png">
+
+    <style>
+        .row {
+            --bs-gutter-x: calc(1.5rem - 15%);
+            --bs-gutter-y: calc(0 - 15%);
+            display: flex;
+            flex-wrap: wrap;
+            margin-top: calc(-1 * var(--bs-gutter-y));
+            margin-right: 2%;
+            margin-left: 2%;
+        }
+
+        body {
+            background-color: rgb(0, 0, 0);
+            margin: 0;
+            padding: 0;
+            overflow: hidden;
+            /* 페이지 내 스크롤 방지 */
+        }
+
+        #video-background {
+            position: relative;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            /* 비디오 비율 유지 */
+            z-index: -1;
+            /* 다른 콘텐츠 위에 배치 */
+        }
+
+        .video-background {
+            position: fixed;
+            overflow: hidden;
+            z-index: -1;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+        }
+
+        .video-background video {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            opacity: 0.5;
+            /* 비디오의 투명도를 조절하여 어렴풋하게 비추도록 설정합니다. */
+        }
+
+        .container {
+            color: white;
+        }
+
+        footer {
+            position: fixed;
+            bottom: 10px;
+            left: 0;
+            width: 100%;
+            z-index: 1000;
+            text-align: center;
+        }
+
+        .text-body-secondary {
+            color: white !important;
+            margin-bottom: 0%;
+        }
+
+        .carousel-control-prev,
+        .carousel-control-next {
+            margin-right: -190px;
+            margin-left: -190px;
+        }
+
+        table {
+            text-align: center;
+            counter-reset: rowNumber;
+            border-collapse: collapse;
+            width: 70%;
+        }
+
+        th,
+        td {
+            border: 1px solid #dddddd;
+            text-align: left;
+            padding: 8px;
+        }
+
+        td:first-child::before {
+            counter-increment: rowNumber;
+            content: counter(rowNumber);
+        }
+
+        .rank_table {
+            display: flex;
+            justify-content: center;
+        }
+    </style>
 </head>
 
 <body>
-    <h1>{{ post.title }}</h1>
-    <p>{{ post.contents }}</p>
-    <p>Published by: {% if post.author %}{{ post.author }}{% else %}Anonymous{% endif %}</p>
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+        <div class="container">
+            <a class="navbar-brand" href="#">LoLDuoMatching</a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
+                data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false"
+                aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                    <li class="nav-item">
+                        <a class="nav-link active" aria-current="page" href="{% url 'post:index' %}">Home</a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="{% url 'post:post_register' %}" class="nav-link active">글작성</a>
+                    </li>
+                </ul>
+                <form class="d-flex" role="search" action="{% url 'post:signup' %}" method="post">
+                    {% csrf_token %}
+                    <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search">
+                    <button class="btn btn-outline-success" type="submit">Sign Up</button>
+                </form>
+            </div>
+        </div>
+    </nav>
 
-    <h3>댓글 작성</h3>
-    <form method="post">
-        {% csrf_token %}
-        {{ form.as_p }}
-        <button type="submit">댓글 작성</button>
-    </form>
-
-    {% for comment in comments %}
-    <div>
-        <p>{{ comment.author }}: {{ comment.content }}</p>
-        <!-- 댓글 삭제 링크 또는 버튼 -->
-        <form action="{% url 'post:comment_delete' pk=post.pk comment_id=comment.pk %}" method="post">
-            {% csrf_token %}
-            <button type="submit">댓글 삭제</button>
-        </form>
+    <div class="video-background">
+        <video id="video-background" src="\static\post\images\League.mp4" muted autoplay playsinline loop></video>
     </div>
-    {% endfor %}
 
-    <a href="{% url 'post:index' %}">게시판으로 돌아가기</a>
+    <br>
+    <br>
+    <div class="container" >
+        <!-- post_list.html -->
+        <div class="row row-cols-1 row-cols-sm-1 row-cols-md-1 g-1">
+            <!-- 검색 결과를 표시하는 부분 -->
+            <div class="col">
+                <div class="card shadow-sm">
+                    <div class="card-body">
+                        <p class="card-text"><text x="50%" y="50%" fill="#eceeef" dy=".3em" ><font size="7em">{{post.title}}</font></text></p>
+                        <p class="card-text">{{post.contents}}</p>
+                        <p class="card-text">작성일자: {{post.create_date}}</p>
+
+                        <br>
+                        <p class="card-text"><text x="50%" y="50%" fill="#eceeef" dy=".3em" ><font size="5em">댓글</font></text></p>
+                        <div>
+                        {% for comment in comments %}
+                        
+                            {{ comment.author }}: {{ comment.content }}
+                            <!-- 댓글 삭제 링크 또는 버튼 -->
+                            <form action="{% url 'post:comment_delete' pk=post.pk comment_id=comment.pk %}" method="post">
+                                {% csrf_token %}
+                                <button type="submit">댓글 삭제</button>
+                            </form>
+                            <br>
+                        {% endfor %}
+                        </div>
+                        <div class="d-flex justify-content-between align-items-center">        
+                            <form method="post">
+                                {% csrf_token %}
+                                {{ form.as_p }}
+                                <button type="submit">댓글 작성</button>
+                            </form>
+                        </div>
+                        <br><br>
+                        <a href="{% url 'post:index' %}">게시판으로 돌아가기</a>
+                        
+
+                    </div>
+                </div>
+            </div>
+        <br>
+
+        <footer class="py-3 my-4 justify-center">
+            <ul class="nav justify-content-center border-bottom pb-3 mb-3">
+                <li class="nav-item"><a href="#" class="nav-link px-2 text-body-secondary">지효상</a></li>
+                <li class="nav-item"><a href="#" class="nav-link px-2 text-body-secondary">이태훈</a></li>
+                <li class="nav-item"><a href="#" class="nav-link px-2 text-body-secondary">김범중</a></li>
+                <li class="nav-item"><a href="#" class="nav-link px-2 text-body-secondary">이정우</a></li>
+            </ul>
+            <p class="text-center text-body-secondary"> 2024 개발에 열심히 참여하신분들</p>
+        </footer>
+
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"
+            integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL"
+            crossorigin="anonymous"></script>
+
 </body>
 
 </html>
