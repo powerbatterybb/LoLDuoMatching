@@ -82,12 +82,6 @@
             margin-bottom: 0%;
         }
 
-        .carousel-control-prev,
-        .carousel-control-next {
-            margin-right: -190px;
-            margin-left: -190px;
-        }
-
         table {
             text-align: center;
             counter-reset: rowNumber;
@@ -123,14 +117,17 @@
             flex-direction: row;
         }
 
-        .carousel-control-next {
-            position: fixed;
-            top : 400px;
-            left : 150px;
-        }
-
         .col {
             text-decoration-line: none;
+        }
+
+        a {
+            text-decoration: none;
+            color: inherit;
+        }
+
+        a:hover {
+            color: inherit;
         }
     </style>
 </head>
@@ -207,7 +204,7 @@
             <div class="col">
                 <div class="card shadow-sm">
                     <div class="card-body">
-                        <p class="card-text"><text x="50%" y="50%" fill="#eceeef" dy=".3em">{{post.title}}</text></p>
+                        <strong class="card-text">{{post.title}}</strong>
                         <p class="card-text">{{post.contents}}</p>
                         <div class="d-flex justify-content-between align-items-center">
                             <div class="btn-group">
