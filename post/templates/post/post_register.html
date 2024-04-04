@@ -36,9 +36,7 @@
             width: 100%;
             height: 100%;
             object-fit: cover;
-            /* 비디오 비율 유지 */
             z-index: -1;
-            /* 다른 콘텐츠 위에 배치 */
         }
 
         .video-background {
@@ -59,7 +57,6 @@
             height: 100%;
             object-fit: cover;
             opacity: 0.5;
-            /* 비디오의 투명도를 조절하여 어렴풋하게 비추도록 설정합니다. */
         }
 
         .container {
@@ -164,16 +161,7 @@
         <video id="video-background" src="\static\post\images\League.mp4" muted autoplay playsinline loop></video>
     </div>
 
-    <div class="box">
-        <h1>게시글 작성</h1>
-        <br>
-        <form method="post" class="form-control">
-            <br>
-            {% csrf_token %}
-            {{ form.as_p }}
-            <button type="submit" class="btn btn-primary">작성 완료</button>
-        </form>
-    </div>
+    
 
     <br>
 
@@ -195,3 +183,14 @@
 </body>
 
 </html>
+
+<div class="box">
+    <h1>게시글 작성</h1>
+    <br>
+    <form method="post" class="form-control">
+        <br>
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button type="submit" class="btn btn-primary">작성 완료</button>
+    </form>
+</div>
