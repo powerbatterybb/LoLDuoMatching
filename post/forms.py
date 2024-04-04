@@ -14,14 +14,15 @@ class CommentForm(forms.ModelForm):
     class Meta:
         model = Comment
         fields = ['author', 'content']
-        labels ={
-            'author' : '이름',
-            'content' : '내용'
-    }
-        
+        labels = {
+            'author': '이름',
+            'content': '내용'
+        }
+
+
 class SignUpForm(UserCreationForm):
     email = forms.EmailField(
-        max_length=254, help_text='Required. Inform a valid email address.')
+        max_length=254, help_text='<br>Required. Inform a valid email address.')
 
     class Meta:
         model = User
